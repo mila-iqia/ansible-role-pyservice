@@ -1,0 +1,5 @@
+---
+- name: Clear out the app
+  ansible.builtin.file:
+    path: "{{ app_dir }}"
+    state: absent

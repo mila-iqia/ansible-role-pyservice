@@ -1,0 +1,12 @@
+[Unit]
+Description="{{ item.description }}"
+After=network.target
+
+[Service]
+User={{ app_user }}
+Type=simple
+ExecStart={{ conda_run }} {{ item.command }}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,28 @@
+---
+- name: Install apt packages
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - git
+      - wget
+    state: present
+
+- name: Install conda
+  ansible.builtin.script: install-conda.sh {{ conda_base }} {{ conda_version }}
+  args:
+    creates: "{{ conda_base }}/envs"
+
+- name: Checkout the code
+  ansible.builtin.git:
+    repo: "{{ app_repo }}"
+    dest: "{{ app_code_dir }}"
+    version: "{{ app_tag }}"
+
+- name: Create a conda environment
+  ansible.builtin.command:
+    cmd: "{{ conda_base }}/bin/conda create --name {{ app_name }} python={{ python_version }} --force -y"
+    creates: "{{ conda_base }}/envs/{{ app_name }}"
+
+- name: Install dependencies
+  ansible.builtin.command:
+    cmd: "{{ conda_run }} pip install -e {{ app_code_dir }} -r {{ app_code_dir }}/pinned-requirements.txt"

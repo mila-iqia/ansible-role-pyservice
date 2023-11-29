@@ -1,0 +1,10 @@
+[Unit]
+Description="{{ item.description }}"
+
+[Service]
+User={{ app_user }}
+Type=oneshot
+ExecStart={{ conda_run }} {{ item.command }}
+
+[Install]
+WantedBy=multi-user.agent
