@@ -10,6 +10,7 @@ The following variables must be set in the inventory:
 
 * `app_name`: The name of the application.
 * `app_user`: The user under which the app should be run and which owns the configuration and data.
+* `app_group`: The group to create the various directories under.
 * `app_repo`: Path to the application repository. See the requirements for the repository in the Repository section below.
 * `app_tag`: Tag or branch of the app_repo to checkout.
 * `app_config_defaults`: Default configuration values to write to the app's configuration file.
