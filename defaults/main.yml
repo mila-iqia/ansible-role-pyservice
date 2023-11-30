@@ -18,11 +18,14 @@ conda_run: "{{ conda_base }}/bin/conda run -n {{ app_name }}"
 
 app_config_dir: "{{ app_dir }}/config"
 app_config: "{{ app_config_dir }}/app.yaml"
+app_secrets: "{{ app_config_dir }}/secrets.yaml"
+app_secrets_dict: {}
 app_config_dict:
   locations:
     root_dir: "{{ app_root }}"
     data_dir: "{{ app_data_dir }}"
     config: "{{ app_config }}"
+    secrets: "{{ app_secrets }}"
     config_dir: "{{ app_config_dir }}"
     code_dir: "{{ app_code_dir }}"
 

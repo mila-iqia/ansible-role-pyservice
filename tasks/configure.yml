@@ -6,6 +6,18 @@
     dest: "{{ app_config }}"
     owner: "{{ app_user }}"
     mode: "0600"
+  vars:
+    content: "{{ app_config_dict }}"
+
+- name: Write secrets
+  become: true
+  ansible.builtin.template:
+    src: "general-config.yaml"
+    dest: "{{ app_secrets }}"
+    owner: "{{ app_user }}"
+    mode: "0600"
+  vars:
+    content: "{{ app_secrets_dict }}"
 
 - name: Remove existing service files
   become: true
