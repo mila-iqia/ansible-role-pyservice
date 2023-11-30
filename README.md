@@ -12,7 +12,8 @@ The following variables must be set in the inventory:
 * `app_user`: The user under which the app should be run and which owns the configuration and data.
 * `app_repo`: Path to the application repository. See the requirements for the repository in the Repository section below.
 * `app_tag`: Tag or branch of the app_repo to checkout.
-* `app_config_dict`: The contents of that variable will be written to `app_config` in YAML format. Ideally it should not contain secrets like tokens or keys.
+* `app_config_defaults`: Default configuration values to write to the app's configuration file.
+* `app_config_dict`: The contents of that variable will be recursively combined with `app_config_defaults` and written to `app_config` in YAML format. Ideally it should not contain secrets like tokens or keys.
 * `app_secrets_dict`: The contents of that variable will be written to `app_secrets` in YAML format. This is where tokens and keys can be defined. It can be empty.
   * Note: you can add `secrets: "{{ app_secrets }}"` in `app_config_dict` so that the configuration contains the location of the secrets file.
 

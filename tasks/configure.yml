@@ -7,7 +7,7 @@
     owner: "{{ app_user }}"
     mode: "0600"
   vars:
-    content: "{{ app_config_dict }}"
+    content: "{{ app_config_defaults | combine(app_config_dict,recursive=true) }}"
 
 - name: Write secrets
   become: true

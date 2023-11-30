@@ -20,6 +20,7 @@ app_config_dir: "{{ app_dir }}/config"
 app_config: "{{ app_config_dir }}/app.yaml"
 app_secrets: "{{ app_config_dir }}/secrets.yaml"
 app_secrets_dict: {}
+app_config_defaults: {}
 app_config_dict:
   locations:
     root_dir: "{{ app_root }}"
