@@ -1,0 +1,5 @@
+---
+- include_tasks: "deactivate.yml"
+- include_tasks: "structure.yml"
+- include_tasks: "install.yml"
+- include_tasks: "configure.yml"
