@@ -3,7 +3,7 @@ Description="{{ item.description }}"
 
 [Service]
 User={{ app_user }}
-Type=oneshot
+Type=simple
 ExecStart={{ conda_run }} {{ item.command }}
 
 [Install]
