@@ -13,12 +13,6 @@ The following variables must be set in the inventory:
 * `app_group`: The group to create the various directories under.
 * `app_repo`: Path to the application repository. See the requirements for the repository in the Repository section below.
 * `app_tag`: Tag or branch of the app_repo to checkout.
-* `app_config_defaults`: Default configuration values to write to the app's configuration file.
-* `app_config_dict`: The contents of that variable will be recursively combined with `app_config_defaults` and written to `app_config` in YAML format. Ideally it should not contain secrets like tokens or keys.
-* `app_secrets_dict`: The contents of that variable will be written to `app_secrets` in YAML format. This is where tokens and keys can be defined. It can be empty.
-  * Note: you can add `secrets: "{{ app_secrets }}"` in `app_config_dict` so that the configuration contains the location of the secrets file.
-
-The config and secrets files are both created with permissions 0600 with `app_user` as the owner.
 
 
 ## Defining a service
@@ -68,6 +62,7 @@ The defaults should work just fine, but you can change these if you want:
 * `app_data_dir`: The path on the target system in which to put application data. Defaults to `{{ app_root }}/data`
 * `app_dir`: The path on the target system in which to put all the code and configuration. Defaults to `{{ app_root }}/app`
 * `app_config_dir`: The path on the target system in which to put configuration. Defaults to `{{ app_dir }}/config`.
+* `app_config`: Path to the configuration file (defaults to `{{ app_config_dir }}/config.yaml`)
 * `conda_base`: The path where to find or install miniconda (defaults to `{{ global_app_root }}/miniconda3`)
 * `conda_isolate`: If true, miniconda will be put under `app_dir` (defaults to false). It's pointless to change this if you change `conda_base`.
 
@@ -76,7 +71,6 @@ The defaults should work just fine, but you can change these if you want:
 
 These variables you should not set, but they may be useful to define extra work to do in the playbook:
 
-* `app_config`: Path to the configuration file.
 * `app_code_dir`: Path to the cloned repository.
 * `conda_run`: Put that in front of a shell command to run it in the app's conda environment.
 * `app_data_files`: List of files in the data directory. You can use `app_data_files.matched == 0` to check if the directory is empty and do something special in that situation.
