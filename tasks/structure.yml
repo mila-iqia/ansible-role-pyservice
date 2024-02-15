@@ -1,4 +1,13 @@
 ---
+- name: Ensure user
+  become: true
+  when: app_ensure_user
+  ansible.builtin.user:
+    name: "{{ app_user }}"
+    comment: "User for {{ app_name }} service"
+    groups:
+    - "{{ app_group }}"
+
 - name: Create the app directory
   ansible.builtin.file:
     path: "{{ app_root }}"
