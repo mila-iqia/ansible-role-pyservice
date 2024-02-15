@@ -44,10 +44,23 @@ app_timers:
 The command is run in the conda environment created by the role.
 
 
+## Writing file content
+
+You can easily write files based on content that is in various variables:
+
+```yaml
+app_files:
+  - dest: "{{ app_config_dir }}/certificate"
+    content: "{{ certificate_contents }}"
+    mode: "0600"  # default mode is also 0600
+```
+
+
 ## Variables
 
 These variables may also be set to customize the install:
 
+* `app_ensure_user`: Whether to create `app_user` if it does not exist.
 * `app_module`: The name of the application's Python module (defaults to `{{ app_name }}`)
 * `python_version`: Python version to use.
 * `conda_version`: Conda version to use. See the list [here](https://repo.anaconda.com/miniconda). Put the part of the name that's in between `Miniconda3` and `.sh`, e.g. `latest-Linux-aarch64` or `py311_23.10.0-1-Linux-x86_64`. Make sure it's the right architecture.
