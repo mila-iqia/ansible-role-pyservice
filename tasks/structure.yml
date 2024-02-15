@@ -1,6 +1,5 @@
 ---
 - name: Create the app directory
-  become: true
   ansible.builtin.file:
     path: "{{ app_root }}"
     state: directory
@@ -9,7 +8,6 @@
     group: "{{ app_group }}"
 
 - name: Create the data directory
-  become: true
   ansible.builtin.file:
     path: "{{ app_data_dir }}"
     state: directory
@@ -18,7 +16,6 @@
     group: "{{ app_group }}"
 
 - name: Create the app directory
-  become: true
   ansible.builtin.file:
     path: "{{ app_dir }}"
     state: directory
@@ -27,7 +24,6 @@
     group: "{{ app_group }}"
 
 - name: Create the config directory
-  become: true
   ansible.builtin.file:
     path: "{{ app_config_dir }}"
     state: directory
@@ -36,7 +32,6 @@
     group: "{{ app_group }}"
 
 - name: Register one level of files in data_dir
-  become: true
   ansible.builtin.find:
     paths: "{{ app_data_dir }}"
     patterns: "*"
