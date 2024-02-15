@@ -21,5 +21,6 @@ conda_run: "{{ conda_base }}/bin/conda run -n {{ app_name }}"
 app_config_dir: "{{ app_dir }}/config"
 app_config: "{{ app_config_dir }}/config.yaml"
 
+app_files: []
 app_services: []
 app_timers: []
