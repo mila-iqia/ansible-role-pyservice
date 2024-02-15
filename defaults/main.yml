@@ -2,6 +2,8 @@
 # app_name: null   <= must set
 # app_user: null   <= must set
 
+app_ensure_user: true
+
 app_group: "{{ ansible_common_remote_group | default(app_user) }}"
 
 global_app_root: "/applications"
