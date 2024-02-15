@@ -1,24 +1,4 @@
 ---
-- name: Write configuration
-  become: true
-  ansible.builtin.template:
-    src: "general-config.yaml"
-    dest: "{{ app_config }}"
-    owner: "{{ app_user }}"
-    mode: "0600"
-  vars:
-    content: "{{ app_config_defaults | combine(app_config_dict,recursive=true) }}"
-
-- name: Write secrets
-  become: true
-  ansible.builtin.template:
-    src: "general-config.yaml"
-    dest: "{{ app_secrets }}"
-    owner: "{{ app_user }}"
-    mode: "0600"
-  vars:
-    content: "{{ app_secrets_dict }}"
-
 - name: Remove existing service files
   become: true
   ansible.builtin.file:
