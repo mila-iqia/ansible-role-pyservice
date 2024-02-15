@@ -1,6 +1,5 @@
 ---
 - name: List services
-  become: true
   register: app_services_existing
   ansible.builtin.find:
     paths:
@@ -9,7 +8,6 @@
       - "{{ app_name }}-*"
 
 - name: Pause and disable services
-  become: true
   ansible.builtin.systemd:
     name: "{{ item.path | basename }}"
     enabled: false

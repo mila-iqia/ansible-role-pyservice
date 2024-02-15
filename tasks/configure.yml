@@ -1,27 +1,23 @@
 ---
 - name: Remove existing service files
-  become: true
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
   loop: "{{ app_services_existing.files }}"
 
 - name: Fill service definition template
-  become: true
   ansible.builtin.template:
     src: "sustained.service"
     dest: "/etc/systemd/system/{{ app_name }}-{{ item.name }}.service"
   loop: "{{ app_services }}"
 
 - name: Fill timer unit definition template
-  become: true
   ansible.builtin.template:
     src: "recurrent.service"
     dest: "/etc/systemd/system/{{ app_name }}-{{ item.name }}.service"
   loop: "{{ app_timers }}"
 
 - name: Fill timer definition template
-  become: true
   ansible.builtin.template:
     src: "recurrent.timer"
     dest: "/etc/systemd/system/{{ app_name }}-{{ item.name }}.timer"
