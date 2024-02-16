@@ -1,0 +1,22 @@
+---
+- name: "Ensure directory"
+  ansible.builtin.file:
+    path: "{{ item.dest | dirname }}"
+    state: directory
+    owner: "{{ app_user }}"
+    mode: "0700"
+  when: "item.content != None"
+  loop: "{{ app_files }}"
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Populate necessary files
+  ansible.builtin.copy:
+    content: "{{ item.content }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ app_user }}"
+    mode: "{{ item.mode | default('0600') }}"
+  when: "item.content != None"
+  loop: "{{ app_files }}"
+  loop_control:
+    label: "{{ item.dest }}"

@@ -16,3 +16,11 @@
     "{{ app_services_existing.files }}"
   loop_control:
     label: "{{ item.path | basename }}"
+
+- name: Remove existing service files
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ app_services_existing.files }}"
+  loop_control:
+    label: "{{ item.path }}"
