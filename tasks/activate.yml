@@ -1,4 +1,22 @@
 ---
+- name: Fill service definition template
+  ansible.builtin.template:
+    src: "sustained.service"
+    dest: "/etc/systemd/system/{{ app_name }}-{{ item.name }}.service"
+  loop: "{{ app_services }}"
+
+- name: Fill timer unit definition template
+  ansible.builtin.template:
+    src: "recurrent.service"
+    dest: "/etc/systemd/system/{{ app_name }}-{{ item.name }}.service"
+  loop: "{{ app_timers }}"
+
+- name: Fill timer definition template
+  ansible.builtin.template:
+    src: "recurrent.timer"
+    dest: "/etc/systemd/system/{{ app_name }}-{{ item.name }}.timer"
+  loop: "{{ app_timers }}"
+
 - name: Restart services
   become: true
   ansible.builtin.systemd:
