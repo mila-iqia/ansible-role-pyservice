@@ -5,6 +5,12 @@
   ansible.builtin.user:
     name: "{{ app_user }}"
     comment: "User for {{ app_name }} service"
+
+- name: Ensure group
+  become: true
+  when: "app_ensure_user and app_group != app_user"
+  ansible.builtin.user:
+    name: "{{ app_user }}"
     groups:
     - "{{ app_group }}"
 
