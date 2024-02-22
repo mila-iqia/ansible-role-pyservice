@@ -11,11 +11,21 @@
   args:
     creates: "{{ conda_base }}/envs"
 
+- name: Copy SSH key
+  when: "app_ssh_key"
+  ansible.builtin.copy:
+    content: "{{ app_ssh_key }}"
+    dest: "{{ app_ssh_key_path }}"
+    owner: "{{ app_user }}"
+    mode: "0600"
+
 - name: Checkout the code
   ansible.builtin.git:
     repo: "{{ app_repo }}"
     dest: "{{ app_code_dir }}"
     version: "{{ app_tag }}"
+    accept_hostkey: yes
+    key_file: "{{ app_ssh_key_path }}"
 
 - name: Create a conda environment
   ansible.builtin.command:
