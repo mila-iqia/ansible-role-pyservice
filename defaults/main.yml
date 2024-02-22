@@ -26,3 +26,7 @@ app_config: "{{ app_config_dir }}/config.yaml"
 app_files: []
 app_services: []
 app_timers: []
+
+app_ssh_key: null
+app_ssh_key_default_path: "{{ app_config_dir }}/ssh_key"
+app_ssh_key_path: "{{ (app_ssh_key == None) | ternary(None, app_ssh_key_default_path) }}"

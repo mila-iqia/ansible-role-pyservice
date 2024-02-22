@@ -64,6 +64,8 @@ These variables may also be set to customize the install:
 * `app_module`: The name of the application's Python module (defaults to `{{ app_name }}`)
 * `python_version`: Python version to use.
 * `conda_version`: Conda version to use. See the list [here](https://repo.anaconda.com/miniconda). Put the part of the name that's in between `Miniconda3` and `.sh`, e.g. `latest-Linux-aarch64` or `py311_23.10.0-1-Linux-x86_64`. Make sure it's the right architecture.
+* `app_ssh_key`: The contents of a SSH key file that authorizes the git action to checkout the repository.
+* `app_ssh_key_path`: *Alternatively*, the path to an SSH file already present on the machine which authorizes the git action to checkout the repository.
 
 
 ## Optional variables
