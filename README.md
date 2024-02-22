@@ -137,7 +137,6 @@ app_files:
 * `conda_base`: The path where to find or install miniconda (defaults to `{{ global_app_root }}/miniconda3`)
 * `conda_isolate`: If true, miniconda will be put under `app_dir` (defaults to false). It's pointless to change this if you change `conda_base`.
 * `conda_run`: Put that in front of a shell command to run it in the app's conda environment.
-* `app_data_files`: List of files in the data directory. You can use `app_data_files.matched == 0` to check if the directory is empty and do something special in that situation.
 
 
 ## Example playbook

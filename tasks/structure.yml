@@ -45,9 +45,3 @@
     mode: "0755"
     owner: "{{ app_user }}"
     group: "{{ app_group }}"
-
-- name: Register one level of files in data_dir
-  ansible.builtin.find:
-    paths: "{{ app_data_dir }}"
-    patterns: "*"
-  register: app_data_files
