@@ -18,7 +18,7 @@ app_code_dir: "{{ app_dir }}/code"
 
 conda_isolate: false
 conda_base: "{{ app_dir if conda_isolate else global_app_root }}/miniconda3"
-conda_run: "{{ conda_base }}/bin/conda run -n {{ app_name }}"
+conda_run: "{{ conda_base }}/bin/conda run --no-capture-output -n {{ app_name }}"
 
 app_config_dir: "{{ app_dir }}/config"
 app_config: "{{ app_config_dir }}/config.yaml"
