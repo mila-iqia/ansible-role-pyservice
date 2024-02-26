@@ -17,11 +17,15 @@
     dest: "/etc/systemd/system/{{ app_name }}-{{ item.name }}.timer"
   loop: "{{ app_timers }}"
 
+- name: Reload daemon
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+
 - name: Restart services
   become: true
   ansible.builtin.systemd:
     name: "{{ app_name }}-{{ item.name }}.service"
-    daemon_reload: true
     state: restarted
   loop:
     "{{ app_services }}"
@@ -30,7 +34,6 @@
   become: true
   ansible.builtin.systemd:
     name: "{{ app_name }}-{{ item.name }}.timer"
-    daemon_reload: true
     state: restarted
   loop:
     "{{ app_timers }}"
