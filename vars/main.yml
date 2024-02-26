@@ -1,0 +1,2 @@
+---
+conda_run: "{{ conda_base }}/bin/conda run --no-capture-output -n {{ app_name }}"
