@@ -78,8 +78,9 @@ The following variables can/must be set in the inventory:
 * `app_repo`: Path to the application repository.
   * If the repo is private, you should set `app_ssh_key` to a private key that is authorized to read the repo (use the SSH URL for the repo), or set `app_ssh_key_path` to the path to the proper file on the host.
 * `app_tag`: Tag or branch of the `app_repo` to checkout.
-* `python_version`: Python version to use.
+* `python_version`: Python version to use. (If changed, set `conda_force_recreate` to true the next time the role is executed).
 * `conda_version`: Conda version to use. See the list [here](https://repo.anaconda.com/miniconda). Put the part of the name that's in between `Miniconda3` and `.sh`, e.g. `latest-Linux-aarch64` or `py311_23.10.0-1-Linux-x86_64`. Make sure it's the right architecture.
+* `conda_force_recreate`: If true, any existing conda environment will be wiped out and dependencies will be reinstalled from scratch. You have to set this to true when changing the Python version.
 
 
 ## Defining a service

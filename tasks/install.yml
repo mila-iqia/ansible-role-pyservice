@@ -27,6 +27,11 @@
     accept_hostkey: yes
     key_file: "{{ app_ssh_key_path }}"
 
+- name: Remove existing conda environment if requested
+  ansible.builtin.command:
+    cmd: "{{ conda_base }}/bin/conda remove --name {{ app_name }} --all --force -y"
+  when: conda_force_recreate
+
 - name: Create a conda environment
   ansible.builtin.command:
     cmd: "{{ conda_base }}/bin/conda create --name {{ app_name }} python={{ python_version }} --force -y"
