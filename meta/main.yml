@@ -5,7 +5,7 @@ galaxy_info:
   role_name: pyservice
   namespace: mila
   license: MIT
-  min_ansible_version: 2.15
+  min_ansible_version: "2.15"
   platforms:
     - name: Debian
       versions:
