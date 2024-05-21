@@ -22,3 +22,4 @@
   loop: "{{ app_files }}"
   loop_control:
     label: "{{ item.dest }}"
+  no_log: true

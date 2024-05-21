@@ -18,6 +18,7 @@
     dest: "{{ app_ssh_key_path }}"
     owner: "{{ app_user }}"
     mode: "0600"
+  no_log: true
 
 - name: Checkout the code
   ansible.builtin.git:
