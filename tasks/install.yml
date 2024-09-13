@@ -6,10 +6,14 @@
       - wget
     state: present
 
-- name: Install conda
-  ansible.builtin.script: install-conda.sh {{ conda_base }} {{ conda_version }}
+- name: Install uv
+  ansible.builtin.script: install-uv.sh {{ uv_location }} {{ uv_version }}
   args:
-    creates: "{{ conda_base }}/envs"
+    creates: "{{ uv_location }}/uv"
+
+- name: Set up correct uv version
+  ansible.builtin.command:
+    cmd: "uv self update {{ uv_version }}"
 
 - name: Copy SSH key
   when: "app_ssh_key"
@@ -28,16 +32,6 @@
     accept_hostkey: yes
     key_file: "{{ app_ssh_key_path }}"
 
-- name: Remove existing conda environment if requested
+- name: Sync dependencies
   ansible.builtin.command:
-    cmd: "{{ conda_base }}/bin/conda remove --name {{ app_name }} --all --force -y"
-  when: conda_force_recreate
-
-- name: Create a conda environment
-  ansible.builtin.command:
-    cmd: "{{ conda_base }}/bin/conda create --name {{ app_name }} python={{ python_version }} --force -y"
-    creates: "{{ conda_base }}/envs/{{ app_name }}"
-
-- name: Install dependencies
-  ansible.builtin.command:
-    cmd: "{{ conda_run }} pip install -e {{ app_code_dir }} -r {{ app_code_dir }}/pinned-requirements.txt"
+    cmd: "uv sync --locked --directory {{ app_code_dir }}"
