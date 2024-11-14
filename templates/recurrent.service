@@ -4,7 +4,7 @@ Description="{{ item.description }}"
 [Service]
 User={{ app_user }}
 Type=simple
-ExecStart={{ conda_run }} {{ item.command }}
+ExecStart={{ uv_run }} {{ item.command }}
 
 [Install]
 WantedBy=multi-user.agent

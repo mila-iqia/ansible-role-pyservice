@@ -16,9 +16,10 @@ app_code_dir: "{{ app_dir }}/code"
 # app_repo: null   <= must set
 # app_tag: null    <= must set
 
-conda_isolate: false
-conda_base: "{{ app_dir if conda_isolate else global_app_root }}/miniconda3"
-conda_force_recreate: false
+uv_isolate: false
+uv_version: "0.5.1"
+uv_location: "{{ app_dir if uv_isolate else global_app_root }}/uv"
+uv_bin: "env VIRTUAL_ENV={{ app_code_dir }}/.venv UV_PYTHON_INSTALL_DIR={{ uv_location }}/python UV_CACHE_DIR={{ uv_location }}/cache {{ uv_location }}/uv"
 
 app_config_dir: "{{ app_dir }}/config"
 app_config: "{{ app_config_dir }}/config.yaml"

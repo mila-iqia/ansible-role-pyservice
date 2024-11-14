@@ -1,2 +1,2 @@
 ---
-conda_run: "{{ conda_base }}/bin/conda run --no-capture-output -n {{ app_name }}"
+uv_run: "{{ uv_bin }} run --no-sync --directory {{ app_code_dir }}"

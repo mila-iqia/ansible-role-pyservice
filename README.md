@@ -21,8 +21,8 @@ By default, the pyservice role will create a user, and the following hierarchy:
 ```bash
 # Root for all pyservice-installed applications, owner is root
 /applications        # Variable: {{ global_app_root }}
-  # Conda environments are hosted here
-  /miniconda3        # Variable: {{ conda_base }}
+  # uv binary is installed here
+  /bin               # Variable: {{ uv_location }}
   # App directory; owner is the the app user
   /APP_NAME          # Variable: {{ app_root }}
     # Application code and configuration
@@ -52,9 +52,8 @@ Installation proceeds as follows:
 1. `setup` tasks
   1. Deactivate all services related to the app and delete their files
   2. Clone the repository
-  3. Install Conda in `conda_base` if not installed
-  4. Create a Conda environment for the application
-  5. Install the dependencies defined in the repo's `pinned-requirements.txt`
+  3. Install uv
+  4. Run `uv sync`
   6. Optionally write files as defined in `app_files`
 2. (Do custom setup here)
 3. `activate` tasks
@@ -78,9 +77,7 @@ The following variables can/must be set in the inventory:
 * `app_repo`: Path to the application repository.
   * If the repo is private, you should set `app_ssh_key` to a private key that is authorized to read the repo (use the SSH URL for the repo), or set `app_ssh_key_path` to the path to the proper file on the host.
 * `app_tag`: Tag or branch of the `app_repo` to checkout.
-* `python_version`: Python version to use. (If changed, set `conda_force_recreate` to true the next time the role is executed).
-* `conda_version`: Conda version to use. See the list [here](https://repo.anaconda.com/miniconda). Put the part of the name that's in between `Miniconda3` and `.sh`, e.g. `latest-Linux-aarch64` or `py311_23.10.0-1-Linux-x86_64`. Make sure it's the right architecture.
-* `conda_force_recreate`: If true, any existing conda environment will be wiped out and dependencies will be reinstalled from scratch. You have to set this to true when changing the Python version.
+* `uv_version`: UV version to use. See the list [here](https://github.com/astral-sh/uv/releases). **Minimum** allowed version should be 0.4.9 (that's the version in which `uv self update {{ uv_version }}` was added).
 
 
 ## Defining a service
@@ -94,7 +91,7 @@ app_services:
     command: python -m {{ app_module }} --config {{ app_config }} web
 ```
 
-The command is run in the conda environment created by the role, and it can be anything you want.
+The command is run in the environment created by the role, and it can be anything you want.
 
 
 ## Defining a timer
@@ -111,7 +108,7 @@ app_timers:
 
 The syntax for the schedule is described [here in section 4.2](https://wiki.archlinux.org/title/systemd/Timers). It ends up in an `OnCalendar` declaration, so you can look at the examples for that.
 
-The command is run in the conda environment created by the role, and it can be anything you want.
+The command is run in the environment created by the role, and it can be anything you want.
 
 
 ## Writing file content
@@ -135,9 +132,9 @@ app_files:
 * `app_dir`: The path on the target system in which to put all the code and configuration. Defaults to `{{ app_root }}/app`
 * `app_config_dir`: The path on the target system in which to put configuration. Defaults to `{{ app_dir }}/config`.
 * `app_config`: Path to the configuration file (defaults to `{{ app_config_dir }}/config.yaml`)
-* `conda_base`: The path where to find or install miniconda (defaults to `{{ global_app_root }}/miniconda3`)
-* `conda_isolate`: If true, miniconda will be put under `app_dir` (defaults to false). It's pointless to change this if you change `conda_base`.
-* `conda_run`: Put that in front of a shell command to run it in the app's conda environment.
+* `uv_location`: The path where to put the uv binary (defaults to `{{ global_app_root }}/bin`)
+* `uv_isolate`: If true, uv will be put under `app_dir` (defaults to false). It's pointless to change this if you change `uv_location`.
+* `uv_run`: Put that in front of a shell command to run it in the app's environment.
 
 
 ## Example playbook
