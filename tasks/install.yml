@@ -13,7 +13,7 @@
 
 - name: Set up correct uv version
   ansible.builtin.command:
-    cmd: "uv self update {{ uv_version }}"
+    cmd: "{{ uv_bin }} self update {{ uv_version }}"
 
 - name: Copy SSH key
   when: "app_ssh_key"
@@ -34,4 +34,4 @@
 
 - name: Sync dependencies
   ansible.builtin.command:
-    cmd: "uv sync --locked --directory {{ app_code_dir }}"
+    cmd: "{{ uv_bin }} sync --locked --directory {{ app_code_dir }}"
