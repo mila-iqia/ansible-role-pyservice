@@ -1,2 +1,2 @@
 ---
-uv_run: "{{ uv_bin }} run --no-sync --directory {{ app_code_dir }}"
+uv_run: "{{ uv_bin }} run --frozen --directory {{ app_code_dir }}"
