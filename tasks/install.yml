@@ -31,7 +31,3 @@
     version: "{{ app_tag }}"
     accept_hostkey: yes
     key_file: "{{ app_ssh_key_path }}"
-
-- name: Sync dependencies
-  ansible.builtin.command:
-    cmd: "{{ uv_bin }} sync --locked --directory {{ app_code_dir }}"

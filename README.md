@@ -22,7 +22,7 @@ By default, the pyservice role will create a user, and the following hierarchy:
 # Root for all pyservice-installed applications, owner is root
 /applications        # Variable: {{ global_app_root }}
   # uv binary is installed here
-  /bin               # Variable: {{ uv_location }}
+  /uv                # Variable: {{ uv_location }}
   # App directory; owner is the the app user
   /APP_NAME          # Variable: {{ app_root }}
     # Application code and configuration
@@ -35,6 +35,9 @@ By default, the pyservice role will create a user, and the following hierarchy:
         config.yaml  # Variable: {{ app_config }}
     # Application data (anything that must be backed up)
     /data            # Variable: {{ app_code_dir }}
+    # Virtual environment
+    /uv
+      /venv
 /etc
   /systemd
     /system
