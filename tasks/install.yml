@@ -7,13 +7,13 @@
     state: present
 
 - name: Install uv
-  ansible.builtin.script: install-uv.sh {{ uv_location }} {{ uv_version }}
+  ansible.builtin.script: install-uv.sh {{ pyservice_uv_location }} {{ pyservice_uv_version }}
   args:
-    creates: "{{ uv_location }}/uv"
+    creates: "{{ pyservice_uv_location }}/uv"
 
 - name: Set up correct uv version
   ansible.builtin.command:
-    cmd: "{{ uv_bin }} self update {{ uv_version }}"
+    cmd: "{{ pyservice_uv_bin }} self update {{ pyservice_uv_version }}"
 
 - name: Copy SSH key
   when: "pyservice_ssh_key"

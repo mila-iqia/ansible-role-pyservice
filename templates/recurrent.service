@@ -4,7 +4,7 @@ Description="{{ item.description }}"
 [Service]
 User={{ pyservice_user }}
 Type=simple
-ExecStart={{ uv_run }} {{ item.command }}
+ExecStart={{ pyservice_run }} {{ item.command }}
 
 [Install]
 WantedBy=multi-user.agent

@@ -16,8 +16,8 @@ pyservice_code_dir: "{{ pyservice_dir }}/code"
 # pyservice_repo: null   <= must set
 # pyservice_tag: null    <= must set
 
-uv_isolate: false
-uv_version: "0.5.1"
+pyservice_uv_isolate: false
+pyservice_uv_version: "0.5.1"
 
 pyservice_config_dir: "{{ pyservice_dir }}/config"
 pyservice_config: "{{ pyservice_config_dir }}/config.yaml"

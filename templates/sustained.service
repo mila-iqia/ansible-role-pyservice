@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User={{ pyservice_user }}
 Type=simple
-ExecStart={{ uv_run }} {{ item.command }}
+ExecStart={{ pyservice_run }} {{ item.command }}
 Restart=always
 
 [Install]

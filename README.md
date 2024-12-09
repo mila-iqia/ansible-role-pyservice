@@ -22,7 +22,7 @@ By default, the pyservice role will create a user, and the following hierarchy:
 # Root for all pyservice-installed applications, owner is root
 /applications        # Variable: {{ pyservice_global_root }}
   # uv binary is installed here
-  /uv                # Variable: {{ uv_location }}
+  /uv                # Variable: {{ pyservice_uv_location }}
   # App directory; owner is the the app user
   /APP_NAME          # Variable: {{ pyservice_root }}
     # Application code and configuration
@@ -56,8 +56,7 @@ Installation proceeds as follows:
   1. Deactivate all services related to the app and delete their files
   2. Clone the repository
   3. Install uv
-  4. Run `uv sync`
-  6. Optionally write files as defined in `pyservice_files`
+  4. Optionally write files as defined in `pyservice_files`
 2. (Do custom setup here)
 3. `activate` tasks
   1. Write the service files and activate them
@@ -80,7 +79,7 @@ The following variables can/must be set in the inventory:
 * `pyservice_repo`: Path to the application repository.
   * If the repo is private, you should set `pyservice_ssh_key` to a private key that is authorized to read the repo (use the SSH URL for the repo), or set `pyservice_ssh_key_path` to the path to the proper file on the host.
 * `pyservice_tag`: Tag or branch of the `pyservice_repo` to checkout.
-* `uv_version`: UV version to use. See the list [here](https://github.com/astral-sh/uv/releases). **Minimum** allowed version should be 0.4.9 (that's the version in which `uv self update {{ uv_version }}` was added).
+* `pyservice_uv_version`: UV version to use. See the list [here](https://github.com/astral-sh/uv/releases). **Minimum** allowed version should be 0.4.9 (that's the version in which `uv self update {{ pyservice_uv_version }}` was added).
 
 
 ## Defining a service
@@ -135,9 +134,9 @@ pyservice_files:
 * `pyservice_dir`: The path on the target system in which to put all the code and configuration. Defaults to `{{ pyservice_root }}/app`
 * `pyservice_config_dir`: The path on the target system in which to put configuration. Defaults to `{{ pyservice_dir }}/config`.
 * `pyservice_config`: Path to the configuration file (defaults to `{{ pyservice_config_dir }}/config.yaml`)
-* `uv_location`: The path where to put the uv binary (defaults to `{{ pyservice_global_root }}/bin`)
-* `uv_isolate`: If true, uv will be put under `pyservice_dir` (defaults to false). It's pointless to change this if you change `uv_location`.
-* `uv_run`: Put that in front of a shell command to run it in the app's environment.
+* `pyservice_uv_location`: The path where to put the uv binary (defaults to `{{ pyservice_global_root }}/bin`)
+* `pyservice_uv_isolate`: If true, uv will be put under `pyservice_dir` (defaults to false). It's pointless to change this if you change `pyservice_uv_location`.
+* `pyservice_run`: Put that in front of a shell command to run it in the app's environment.
 
 
 ## Example playbook
