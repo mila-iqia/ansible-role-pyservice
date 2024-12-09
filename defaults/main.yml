@@ -1,31 +1,31 @@
 ---
-# app_name: null   <= must set
-# app_user: null   <= must set
+# pyservice_name: null   <= must set
+# pyservice_user: null   <= must set
 
-app_ensure_user: true
+pyservice_ensure_user: true
 
-app_group: "{{ ansible_common_remote_group | default(app_user) }}"
+pyservice_group: "{{ ansible_common_remote_group | default(pyservice_user) }}"
 
-global_app_root: "/applications"
-app_root: "{{ global_app_root }}/{{ app_name }}"
-app_module: "{{ app_name }}"
-app_data_dir: "{{ app_root }}/data"
-app_dir: "{{ app_root }}/app"
+pyservice_global_root: "/applications"
+pyservice_root: "{{ pyservice_global_root }}/{{ pyservice_name }}"
+pyservice_module: "{{ pyservice_name }}"
+pyservice_data_dir: "{{ pyservice_root }}/data"
+pyservice_dir: "{{ pyservice_root }}/app"
 
-app_code_dir: "{{ app_dir }}/code"
-# app_repo: null   <= must set
-# app_tag: null    <= must set
+pyservice_code_dir: "{{ pyservice_dir }}/code"
+# pyservice_repo: null   <= must set
+# pyservice_tag: null    <= must set
 
 uv_isolate: false
 uv_version: "0.5.1"
 
-app_config_dir: "{{ app_dir }}/config"
-app_config: "{{ app_config_dir }}/config.yaml"
+pyservice_config_dir: "{{ pyservice_dir }}/config"
+pyservice_config: "{{ pyservice_config_dir }}/config.yaml"
 
-app_files: []
-app_services: []
-app_timers: []
+pyservice_files: []
+pyservice_services: []
+pyservice_timers: []
 
-app_ssh_key: null
-app_ssh_key_default_path: "{{ app_config_dir }}/ssh_key"
-app_ssh_key_path: "{{ (app_ssh_key == None) | ternary(None, app_ssh_key_default_path) }}"
+pyservice_ssh_key: null
+pyservice_ssh_key_default_path: "{{ pyservice_config_dir }}/ssh_key"
+pyservice_ssh_key_path: "{{ (pyservice_ssh_key == None) | ternary(None, pyservice_ssh_key_default_path) }}"

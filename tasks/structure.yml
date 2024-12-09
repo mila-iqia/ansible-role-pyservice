@@ -1,47 +1,47 @@
 ---
 - name: Ensure user
   become: true
-  when: app_ensure_user
+  when: pyservice_ensure_user
   ansible.builtin.user:
-    name: "{{ app_user }}"
-    comment: "User for {{ app_name }} service"
+    name: "{{ pyservice_user }}"
+    comment: "User for {{ pyservice_name }} service"
 
 - name: Ensure group
   become: true
-  when: "app_ensure_user and app_group != app_user"
+  when: "pyservice_ensure_user and pyservice_group != pyservice_user"
   ansible.builtin.user:
-    name: "{{ app_user }}"
+    name: "{{ pyservice_user }}"
     groups:
-    - "{{ app_group }}"
+    - "{{ pyservice_group }}"
 
 - name: Create the app directory
   ansible.builtin.file:
-    path: "{{ app_root }}"
+    path: "{{ pyservice_root }}"
     state: directory
     mode: "0775"
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
+    owner: "{{ pyservice_user }}"
+    group: "{{ pyservice_group }}"
 
 - name: Create the data directory
   ansible.builtin.file:
-    path: "{{ app_data_dir }}"
+    path: "{{ pyservice_data_dir }}"
     state: directory
     mode: "0750"
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
+    owner: "{{ pyservice_user }}"
+    group: "{{ pyservice_group }}"
 
 - name: Create the app directory
   ansible.builtin.file:
-    path: "{{ app_dir }}"
+    path: "{{ pyservice_dir }}"
     state: directory
     mode: "0775"
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
+    owner: "{{ pyservice_user }}"
+    group: "{{ pyservice_group }}"
 
 - name: Create the config directory
   ansible.builtin.file:
-    path: "{{ app_config_dir }}"
+    path: "{{ pyservice_config_dir }}"
     state: directory
     mode: "0750"
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
+    owner: "{{ pyservice_user }}"
+    group: "{{ pyservice_group }}"

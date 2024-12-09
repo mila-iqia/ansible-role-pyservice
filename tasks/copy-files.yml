@@ -3,11 +3,11 @@
   ansible.builtin.file:
     path: "{{ item.dest | dirname }}"
     state: directory
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
+    owner: "{{ pyservice_user }}"
+    group: "{{ pyservice_group }}"
     mode: "0700"
   when: "item.content != None"
-  loop: "{{ app_files }}"
+  loop: "{{ pyservice_files }}"
   loop_control:
     label: "{{ item.dest }}"
 
@@ -15,11 +15,11 @@
   ansible.builtin.copy:
     content: "{{ item.content }}"
     dest: "{{ item.dest }}"
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
+    owner: "{{ pyservice_user }}"
+    group: "{{ pyservice_group }}"
     mode: "{{ item.mode | default('0600') }}"
   when: "item.content != None"
-  loop: "{{ app_files }}"
+  loop: "{{ pyservice_files }}"
   loop_control:
     label: "{{ item.dest }}"
   no_log: true

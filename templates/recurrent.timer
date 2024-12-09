@@ -4,7 +4,7 @@ Description="{{ item.description }} (Timer)"
 [Timer]
 OnCalendar={{ item.schedule }}
 Persistent=True
-Unit={{ app_name }}-{{ item.name }}.service
+Unit={{ pyservice_name }}-{{ item.name }}.service
 
 [Install]
 WantedBy=multi-user.target

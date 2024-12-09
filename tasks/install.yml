@@ -16,18 +16,18 @@
     cmd: "{{ uv_bin }} self update {{ uv_version }}"
 
 - name: Copy SSH key
-  when: "app_ssh_key"
+  when: "pyservice_ssh_key"
   ansible.builtin.copy:
-    content: "{{ app_ssh_key }}"
-    dest: "{{ app_ssh_key_path }}"
-    owner: "{{ app_user }}"
+    content: "{{ pyservice_ssh_key }}"
+    dest: "{{ pyservice_ssh_key_path }}"
+    owner: "{{ pyservice_user }}"
     mode: "0600"
   no_log: true
 
 - name: Checkout the code
   ansible.builtin.git:
-    repo: "{{ app_repo }}"
-    dest: "{{ app_code_dir }}"
-    version: "{{ app_tag }}"
+    repo: "{{ pyservice_repo }}"
+    dest: "{{ pyservice_code_dir }}"
+    version: "{{ pyservice_tag }}"
     accept_hostkey: yes
-    key_file: "{{ app_ssh_key_path }}"
+    key_file: "{{ pyservice_ssh_key_path }}"

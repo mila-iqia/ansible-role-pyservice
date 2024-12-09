@@ -1,5 +1,5 @@
 ---
-uv_location: "{{ app_dir if uv_isolate else global_app_root }}/uv"
-uv_local: "{{ app_dir }}/uv"
+uv_location: "{{ pyservice_dir if uv_isolate else pyservice_global_root }}/uv"
+uv_local: "{{ pyservice_dir }}/uv"
 uv_bin: "env UV_PROJECT_ENVIRONMENT={{ uv_local }}/venv UV_PYTHON_INSTALL_DIR={{ uv_local }}/python UV_CACHE_DIR={{ uv_local }}/cache {{ uv_location }}/uv"
-uv_run: "{{ uv_bin }} run --frozen --directory {{ app_code_dir }}"
+uv_run: "{{ uv_bin }} run --frozen --directory {{ pyservice_code_dir }}"
