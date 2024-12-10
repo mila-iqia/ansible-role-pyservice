@@ -20,31 +20,31 @@ By default, the pyservice role will create a user, and the following hierarchy:
 
 ```bash
 # Root for all pyservice-installed applications, owner is root
-/applications        # Variable: {{ global_app_root }}
+/applications        # Variable: {{ pyservice_global_root }}
   # uv binary is installed here
-  /uv                # Variable: {{ uv_location }}
+  /uv                # Variable: {{ pyservice_uv_location }}
   # App directory; owner is the the app user
-  /APP_NAME          # Variable: {{ app_root }}
+  /APP_NAME          # Variable: {{ pyservice_root }}
     # Application code and configuration
-    /app             # Variable: {{ app_dir }}
+    /app             # Variable: {{ pyservice_dir }}
       # The repository is cloned here
-      /code          # Variable: {{ app_code_dir }}
+      /code          # Variable: {{ pyservice_code_dir }}
       # Configuration files, certificates, keys, etc.
-      /config        # Variable: {{ app_config_dir }}
+      /config        # Variable: {{ pyservice_config_dir }}
         # Default configuration file, provided for convenience but not mandatory
-        config.yaml  # Variable: {{ app_config }}
+        config.yaml  # Variable: {{ pyservice_config }}
     # Application data (anything that must be backed up)
-    /data            # Variable: {{ app_code_dir }}
+    /data            # Variable: {{ pyservice_code_dir }}
     # Virtual environment
     /uv
       /venv
 /etc
   /systemd
     /system
-      # Service files defined in {{ app_services }}
+      # Service files defined in {{ pyservice_services }}
       APP_NAME-xyz.service
       ...
-      # Timer files for recurrent work, defined in {{ app_timers }}
+      # Timer files for recurrent work, defined in {{ pyservice_timers }}
       APP_NAME-uvw.service
       APP_NAME-uvw.timer
       ...
@@ -56,42 +56,41 @@ Installation proceeds as follows:
   1. Deactivate all services related to the app and delete their files
   2. Clone the repository
   3. Install uv
-  4. Run `uv sync`
-  6. Optionally write files as defined in `app_files`
+  4. Optionally write files as defined in `pyservice_files`
 2. (Do custom setup here)
 3. `activate` tasks
   1. Write the service files and activate them
 
 The application's work must be defined in two lists:
 
-* `app_services` for services that must be up at all times, such as a web server or an API
-* `app_timers` for recurrent work, such as scraping information or generating a report every day or week
+* `pyservice_services` for services that must be up at all times, such as a web server or an API
+* `pyservice_timers` for recurrent work, such as scraping information or generating a report every day or week
 
 
 ## Important variables
 
 The following variables can/must be set in the inventory:
 
-* `app_name`: The name of the application.
-* `app_module`: The name of the Python module defined by the application. Defaults to `{{ app_name }}`.
-* `app_user`: The user under which the app should be run and which owns the configuration and data.
-  * Set `app_ensure_user` to `false` in order not to do this, if you want to control user creation.
-* `app_group`: The group to create the various directories under. Defaults to `{{ ansible_common_remote_group | default(app_user) }}`.
-* `app_repo`: Path to the application repository.
-  * If the repo is private, you should set `app_ssh_key` to a private key that is authorized to read the repo (use the SSH URL for the repo), or set `app_ssh_key_path` to the path to the proper file on the host.
-* `app_tag`: Tag or branch of the `app_repo` to checkout.
-* `uv_version`: UV version to use. See the list [here](https://github.com/astral-sh/uv/releases). **Minimum** allowed version should be 0.4.9 (that's the version in which `uv self update {{ uv_version }}` was added).
+* `pyservice_name`: The name of the application.
+* `pyservice_module`: The name of the Python module defined by the application. Defaults to `{{ pyservice_name }}`.
+* `pyservice_user`: The user under which the app should be run and which owns the configuration and data.
+  * Set `pyservice_ensure_user` to `false` in order not to do this, if you want to control user creation.
+* `pyservice_group`: The group to create the various directories under. Defaults to `{{ ansible_common_remote_group | default(pyservice_user) }}`.
+* `pyservice_repo`: Path to the application repository.
+  * If the repo is private, you should set `pyservice_ssh_key` to a private key that is authorized to read the repo (use the SSH URL for the repo), or set `pyservice_ssh_key_path` to the path to the proper file on the host.
+* `pyservice_tag`: Tag or branch of the `pyservice_repo` to checkout.
+* `pyservice_uv_version`: UV version to use. See the list [here](https://github.com/astral-sh/uv/releases). **Minimum** allowed version should be 0.4.9 (that's the version in which `uv self update {{ pyservice_uv_version }}` was added).
 
 
 ## Defining a service
 
-The `app_services` variable should contain a list of services. Each service has a name, description and associated command:
+The `pyservice_services` variable should contain a list of services. Each service has a name, description and associated command:
 
 ```yaml
-app_services:
+pyservice_services:
   - name: web
-    description: "Run the web interface for {{ app_name }}"
-    command: python -m {{ app_module }} --config {{ app_config }} web
+    description: "Run the web interface for {{ pyservice_name }}"
+    command: python -m {{ pyservice_module }} --config {{ pyservice_config }} web
 ```
 
 The command is run in the environment created by the role, and it can be anything you want.
@@ -99,14 +98,14 @@ The command is run in the environment created by the role, and it can be anythin
 
 ## Defining a timer
 
-The `app_timers` variable should contain a list of timers. Each timer has a name, description, schedule and associated command:
+The `pyservice_timers` variable should contain a list of timers. Each timer has a name, description, schedule and associated command:
 
 ```yaml
-app_timers:
+pyservice_timers:
   - name: something
     description: "Do something every Monday at 2 AM"
     schedule: "Mon, 02:00"
-    command: python -m {{ app_module }} --config {{ app_config }} do_something
+    command: python -m {{ pyservice_module }} --config {{ pyservice_config }} do_something
 ```
 
 The syntax for the schedule is described [here in section 4.2](https://wiki.archlinux.org/title/systemd/Timers). It ends up in an `OnCalendar` declaration, so you can look at the examples for that.
@@ -119,8 +118,8 @@ The command is run in the environment created by the role, and it can be anythin
 You can easily write files based on content that is in various variables:
 
 ```yaml
-app_files:
-  - dest: "{{ app_config_dir }}/certificate"
+pyservice_files:
+  - dest: "{{ pyservice_config_dir }}/certificate"
     content: "{{ certificate_contents }}"
     mode: "0600"  # default mode is also 0600
 ```
@@ -128,37 +127,37 @@ app_files:
 
 ## Other variables
 
-* `global_app_root`: The path where all applications will be installed into subdirectories (defaults to `/applications`)
-* `app_root`: The path on the target system in which to put all the code, configuration and data. Defaults to `{{ global_app_root }}/{{ app_name }}`
-* `app_code_dir`: Path to the cloned repository.
-* `app_data_dir`: The path on the target system in which to put application data. Defaults to `{{ app_root }}/data`
-* `app_dir`: The path on the target system in which to put all the code and configuration. Defaults to `{{ app_root }}/app`
-* `app_config_dir`: The path on the target system in which to put configuration. Defaults to `{{ app_dir }}/config`.
-* `app_config`: Path to the configuration file (defaults to `{{ app_config_dir }}/config.yaml`)
-* `uv_location`: The path where to put the uv binary (defaults to `{{ global_app_root }}/bin`)
-* `uv_isolate`: If true, uv will be put under `app_dir` (defaults to false). It's pointless to change this if you change `uv_location`.
-* `uv_run`: Put that in front of a shell command to run it in the app's environment.
+* `pyservice_global_root`: The path where all applications will be installed into subdirectories (defaults to `/applications`)
+* `pyservice_root`: The path on the target system in which to put all the code, configuration and data. Defaults to `{{ pyservice_global_root }}/{{ pyservice_name }}`
+* `pyservice_code_dir`: Path to the cloned repository.
+* `pyservice_data_dir`: The path on the target system in which to put application data. Defaults to `{{ pyservice_root }}/data`
+* `pyservice_dir`: The path on the target system in which to put all the code and configuration. Defaults to `{{ pyservice_root }}/app`
+* `pyservice_config_dir`: The path on the target system in which to put configuration. Defaults to `{{ pyservice_dir }}/config`.
+* `pyservice_config`: Path to the configuration file (defaults to `{{ pyservice_config_dir }}/config.yaml`)
+* `pyservice_uv_location`: The path where to put the uv binary (defaults to `{{ pyservice_global_root }}/bin`)
+* `pyservice_uv_isolate`: If true, uv will be put under `pyservice_dir` (defaults to false). It's pointless to change this if you change `pyservice_uv_location`.
+* `pyservice_run`: Put that in front of a shell command to run it in the app's environment.
 
 
 ## Example playbook
 
-The typical playbook should run the `setup` tasks, then some custom operations, typically templating a configuration file, then run the `activate` tasks. The `app_services`, `app_timers` and `app_files` variables can be defined in the playbook since it makes little sense to change them in the inventory, except possibly for the timer schedules.
+The typical playbook should run the `setup` tasks, then some custom operations, typically templating a configuration file, then run the `activate` tasks. The `pyservice_services`, `pyservice_timers` and `pyservice_files` variables can be defined in the playbook since it makes little sense to change them in the inventory, except possibly for the timer schedules.
 
 ```yaml
 ---
 - hosts: all
   vars:
-    app_services:
+    pyservice_services:
       - name: web
-        description: "Run the web interface for {{ app_name }}"
-        command: python -m {{ app_module }} --config {{ app_config }} web
-    app_timers:
+        description: "Run the web interface for {{ pyservice_name }}"
+        command: python -m {{ pyservice_module }} --config {{ pyservice_config }} web
+    pyservice_timers:
       - name: something
         description: "Do something every Monday at 2 AM"
         schedule: "Mon, 02:00"
-        command: python -m {{ app_module }} --config {{ app_config }} do_something
-    app_files:
-      - dest: "{{ app_config_dir }}/certificate"
+        command: python -m {{ pyservice_module }} --config {{ pyservice_config }} do_something
+    pyservice_files:
+      - dest: "{{ pyservice_config_dir }}/certificate"
         content: "{{ certificate_contents }}"
         mode: "0600"
 
@@ -171,8 +170,8 @@ The typical playbook should run the `setup` tasks, then some custom operations, 
   - name: Template configuration
     ansible.builtin.template:
       src: "config.yaml"
-      dest: "{{ app_config }}"
-      owner: "{{ app_user }}"
+      dest: "{{ pyservice_config }}"
+      owner: "{{ pyservice_user }}"
       mode: "0600"
 
   - name: Activate

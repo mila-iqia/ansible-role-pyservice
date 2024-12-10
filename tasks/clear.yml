@@ -1,5 +1,5 @@
 ---
 - name: Clear out the app
   ansible.builtin.file:
-    path: "{{ app_dir }}"
+    path: "{{ pyservice_dir }}"
     state: absent

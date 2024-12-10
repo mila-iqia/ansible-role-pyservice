@@ -1,11 +1,11 @@
 ---
 - name: List services
-  register: app_services_existing
+  register: pyservice_services_existing
   ansible.builtin.find:
     paths:
       - "/etc/systemd/system"
     pattern:
-      - "{{ app_name }}-*"
+      - "{{ pyservice_name }}-*"
 
 - name: Pause and disable services
   ansible.builtin.systemd:
@@ -13,7 +13,7 @@
     enabled: false
     state: stopped
   loop:
-    "{{ app_services_existing.files }}"
+    "{{ pyservice_services_existing.files }}"
   loop_control:
     label: "{{ item.path | basename }}"
 
@@ -21,6 +21,6 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
-  loop: "{{ app_services_existing.files }}"
+  loop: "{{ pyservice_services_existing.files }}"
   loop_control:
     label: "{{ item.path }}"

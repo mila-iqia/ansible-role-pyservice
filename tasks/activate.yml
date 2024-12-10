@@ -2,20 +2,20 @@
 - name: Fill service definition template
   ansible.builtin.template:
     src: "sustained.service"
-    dest: "/etc/systemd/system/{{ app_name }}-{{ item.name }}.service"
-  loop: "{{ app_services }}"
+    dest: "/etc/systemd/system/{{ pyservice_name }}-{{ item.name }}.service"
+  loop: "{{ pyservice_services }}"
 
 - name: Fill timer unit definition template
   ansible.builtin.template:
     src: "recurrent.service"
-    dest: "/etc/systemd/system/{{ app_name }}-{{ item.name }}.service"
-  loop: "{{ app_timers }}"
+    dest: "/etc/systemd/system/{{ pyservice_name }}-{{ item.name }}.service"
+  loop: "{{ pyservice_timers }}"
 
 - name: Fill timer definition template
   ansible.builtin.template:
     src: "recurrent.timer"
-    dest: "/etc/systemd/system/{{ app_name }}-{{ item.name }}.timer"
-  loop: "{{ app_timers }}"
+    dest: "/etc/systemd/system/{{ pyservice_name }}-{{ item.name }}.timer"
+  loop: "{{ pyservice_timers }}"
 
 - name: Reload daemon
   become: true
@@ -25,15 +25,15 @@
 - name: Restart services
   become: true
   ansible.builtin.systemd:
-    name: "{{ app_name }}-{{ item.name }}.service"
+    name: "{{ pyservice_name }}-{{ item.name }}.service"
     state: restarted
   loop:
-    "{{ app_services }}"
+    "{{ pyservice_services }}"
 
 - name: Enable timers
   become: true
   ansible.builtin.systemd:
-    name: "{{ app_name }}-{{ item.name }}.timer"
+    name: "{{ pyservice_name }}-{{ item.name }}.timer"
     state: restarted
   loop:
-    "{{ app_timers }}"
+    "{{ pyservice_timers }}"
