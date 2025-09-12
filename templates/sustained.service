@@ -5,6 +5,7 @@ After=network.target
 [Service]
 User={{ pyservice_user }}
 Type=simple
+EnvironmentFile=-{{ pyservice_env }}
 ExecStart={{ pyservice_run }} {{ item.command }}
 Restart=always
 

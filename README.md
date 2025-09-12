@@ -33,6 +33,8 @@ By default, the pyservice role will create a user, and the following hierarchy:
       /config        # Variable: {{ pyservice_config_dir }}
         # Default configuration file, provided for convenience but not mandatory
         config.yaml  # Variable: {{ pyservice_config }}
+        # EnvironmentFile used by the systemd services
+        env          # Variable: {{ pyservice_env }}
     # Application data (anything that must be backed up)
     /data            # Variable: {{ pyservice_code_dir }}
     # Virtual environment

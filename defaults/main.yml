@@ -21,6 +21,7 @@ pyservice_uv_version: "0.5.1"
 
 pyservice_config_dir: "{{ pyservice_dir }}/config"
 pyservice_config: "{{ pyservice_config_dir }}/config.yaml"
+pyservice_env: "{{ pyservice_config_dir }}/env"
 
 pyservice_files: []
 pyservice_services: []
