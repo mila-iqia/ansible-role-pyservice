@@ -16,7 +16,7 @@
     cmd: "{{ pyservice_uv_bin }} self update {{ pyservice_uv_version }}"
 
 - name: Copy SSH key
-  when: "pyservice_ssh_key"
+  when: "pyservice_ssh_key != None"
   ansible.builtin.copy:
     content: "{{ pyservice_ssh_key }}"
     dest: "{{ pyservice_ssh_key_path }}"
