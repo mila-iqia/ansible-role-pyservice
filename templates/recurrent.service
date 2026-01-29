@@ -6,6 +6,7 @@ User={{ pyservice_user }}
 Type=simple
 EnvironmentFile=-{{ pyservice_env }}
 ExecStart={{ pyservice_run }} {{ item.command }}
+RuntimeMaxSec={{ item.timeout | default("infinity") }}
 
 [Install]
 WantedBy=multi-user.agent

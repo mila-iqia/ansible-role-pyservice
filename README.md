@@ -158,6 +158,7 @@ The typical playbook should run the `setup` tasks, then some custom operations, 
         description: "Do something every Monday at 2 AM"
         schedule: "Mon, 02:00"
         command: python -m {{ pyservice_module }} --config {{ pyservice_config }} do_something
+        timeout: 3600
     pyservice_files:
       - dest: "{{ pyservice_config_dir }}/certificate"
         content: "{{ certificate_contents }}"
